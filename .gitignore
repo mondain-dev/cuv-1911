@@ -1,4 +1,6 @@
 *.txt
+*.ttc
+*.ttf
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
