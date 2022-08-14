@@ -1,0 +1,72 @@
+
+\usepackage{pxeveryshi}
+\def\pgfsysdriver{pgfsys-dvipdfmx.def}
+\pdfpagewidth=\paperwidth
+\pdfpageheight=\paperheight
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{eso-pic}
+\AddToShipoutPictureBG{%
+\begin{tikzpicture}[overlay,remember picture]
+\newcommand\cuvframeoffsetevenx{1.2cm}
+\newcommand\cuvframetop{3.2cm}
+\newcommand\cuvframebottom{1.9cm}
+\newcommand\cuvframeleftodd{2.1cm}
+\newcommand\cuvframerightodd{1.45cm}
+\newcommand\cuvframewidth{0.1cm}
+\newcommand\cuvframemargin{0.5cm}
+\newcommand\cuvframevnsize{0.7cm}
+
+\ifodd\value{page}
+\draw[line width=2pt]
+    ($ (current page.north west) + (\cuvframeleftodd,-\cuvframetop) $) % top left
+    -- 
+    ($ (current page.north east) + (-\cuvframerightodd,-\cuvframetop) $) % top right 
+    --
+    ($ (current page.south east) + (-\cuvframerightodd,\cuvframebottom) $) % bottom right 
+    --
+    ($ (current page.south west) + (\cuvframeleftodd,\cuvframebottom) $); % bottom left 
+\draw[line width=0.5pt]
+    ($ (current page.north west) + (\cuvframeleftodd,-\cuvframetop-\cuvframewidth) $)
+    -- 
+    ($ (current page.north east) + (-\cuvframerightodd-\cuvframewidth,-\cuvframetop-\cuvframewidth) $)
+    --
+    ($ (current page.south east) + (-\cuvframerightodd-\cuvframewidth,\cuvframebottom+\cuvframewidth) $)
+    --
+    ($ (current page.south west) + (\cuvframeleftodd,\cuvframebottom+\cuvframewidth) $);
+\draw[line width=0.5pt]
+    ($ (current page.north west) + (\cuvframeleftodd + \cuvframemargin,-\cuvframetop-\cuvframewidth) $)
+    -- 
+    ($ (current page.south west) + (\cuvframeleftodd + \cuvframemargin,\cuvframebottom+\cuvframewidth) $);
+\draw[line width=0.5pt]
+    ($ (current page.north west) + (\cuvframeleftodd + \cuvframemargin,-\cuvframetop-\cuvframevnsize) $)
+    -- 
+    ($ (current page.north east) + (-\cuvframerightodd-\cuvframewidth,-\cuvframetop-\cuvframevnsize) $);
+\else
+\draw[line width=2pt]
+    ($ (current page.north east) + (-\cuvframeleftodd,-\cuvframetop) + (\cuvframeoffsetevenx, 0) $)
+    -- 
+    ($ (current page.north west) + (\cuvframerightodd,-\cuvframetop) + (\cuvframeoffsetevenx, 0) $)
+    --
+    ($ (current page.south west) + (\cuvframerightodd,\cuvframebottom) + (\cuvframeoffsetevenx, 0) $)
+    --
+    ($ (current page.south east) + (-\cuvframeleftodd,\cuvframebottom) + (\cuvframeoffsetevenx, 0) $);
+\draw[line width=0.5pt]
+    ($ (current page.north east) + (-\cuvframeleftodd,-\cuvframetop-\cuvframewidth) + (\cuvframeoffsetevenx, 0) $)
+    -- 
+    ($ (current page.north west) + (\cuvframerightodd+\cuvframewidth,-\cuvframetop-\cuvframewidth) + (\cuvframeoffsetevenx, 0) $)
+    --
+    ($ (current page.south west) + (\cuvframerightodd+\cuvframewidth,\cuvframebottom+\cuvframewidth) + (\cuvframeoffsetevenx, 0) $)
+    --
+    ($ (current page.south east) + (-\cuvframeleftodd,\cuvframebottom+\cuvframewidth) + (\cuvframeoffsetevenx, 0) $);
+\draw[line width=0.5pt]
+    ($ (current page.north east) + (-\cuvframeleftodd - \cuvframemargin,-\cuvframetop-\cuvframewidth) + (\cuvframeoffsetevenx, 0) $)
+    -- 
+    ($ (current page.south east) + (-\cuvframeleftodd - \cuvframemargin,\cuvframebottom+\cuvframewidth) + (\cuvframeoffsetevenx, 0) $);
+\draw[line width=0.5pt]
+    ($ (current page.north east) + (-\cuvframeleftodd - \cuvframemargin,-\cuvframetop-\cuvframevnsize) + (\cuvframeoffsetevenx, 0) $)
+    -- 
+    ($ (current page.north west) + (\cuvframerightodd + \cuvframewidth,-\cuvframetop-\cuvframevnsize) + (\cuvframeoffsetevenx, 0) $);
+\fi
+\end{tikzpicture}
+}

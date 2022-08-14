@@ -1,0 +1,236 @@
+\documentclass[openany, a5paper]{utbook}
+\usepackage{lltjp-geometry}
+\usepackage{geometry}
+\usepackage{pxatbegshi}
+% \usepackage{showframe}
+\usepackage[fontset=windows, heading=true]{ctex}
+
+%% books, chapters
+\usepackage{titleps}
+\usepackage{zhnumber}
+% \newcommand*{\parttitle}{}
+\renewcommand{\part}[1]{%
+    \refstepcounter{part}%
+    \noindent \mbox{\bfseries \kanjiskip=6pt #1}\par%
+    \partmark{#1}\par
+    \renewcommand{\parttitle}{#1}%
+}
+\newcommand{\bbook}[1]{%
+    \refstepcounter{chapter}%
+    \setcounter{section}{0}
+    \noindent　　 \mbox{\bfseries \kanjiskip=6pt #1}\par%
+    \chaptermark{#1}%
+}
+\newcommand{\bchapter}{%
+    \refstepcounter{section}%
+    \sectionmark{第\zhnum{section}章}%
+    % \renewcommand\sectiontitle{第\zhnum{section}章}
+    \noindent　{\bfseries\sectiontitle}　%
+}
+
+% page layout
+\usepackage{calc}
+\newcommand{\ebox}[1]{
+\parbox{\maxof{\widthof{#1}}{4zw}}{\parfillskip=0pt #1}}
+
+\addtolength{\voffset}{1.5cm}
+\addtolength{\textwidth}{0.16cm}
+\addtolength{\textheight}{0.2cm}
+\makeatletter
+\newcommand\frontchaptertitle{}
+\newcommand\mainpageheader{\mbox{\kanjiskip=5pt\parttitle}\quad\quad\quad\ebox{\chaptertitle}\quad\quad\quad\quad\ebox{\sectiontitle}}
+\def\mainchapterheader{
+\if@mainmatter
+  \raisebox{\dimexpr-\height-6pt\relax}[0pt]{%
+    \hbox to \textheight{%
+      \tate%\hspace{3zh}\small
+      \ifnum\value{chapter} > \z@
+        \mainpageheader
+      \else
+        \frontchaptertitle
+      \fi\hfill
+      \thepage\hspace{4zh}}}%
+  \else
+  \raisebox{\dimexpr-\height-\headsep\relax}[0pt]{%
+    \hbox to \textheight{%
+      \tate\hspace{3zh}\small\chaptertitle\hfill
+      \thepage\hspace{4zh}}}%
+  \fi
+}
+\newpagestyle{main}{%
+    \widenhead{20pt}{20pt}%
+    % TODO -- Set the headings of even pages
+    \sethead[][][{\mainchapterheader}]{\mainchapterheader}{}{}
+}
+\makeatother
+\pagestyle{main}
+
+% underlines for proper names, place names and titles
+\usepackage[normalem]{ulem}
+\newlength{\lPNskip}
+\newlength{\rPNskip}
+\newcommand\PNline{\leavevmode \bgroup \markoverwith{\raise0.75em\vbox{\hrule width0.2em}}\ULon}
+\newcommand\ProperNameC[3]{%
+    \setlength{\lPNskip}{0.1zw}%
+    \setlength{\rPNskip}{0.1zw}%
+    \advance\lPNskip#1zw%
+    \advance\rPNskip#2zw%
+    \hskip\lPNskip\PNline{\kern-\lPNskip#3\kern-\rPNskip}\hskip\rPNskip%
+}
+\newcommand\ProperName[1]{%
+    \ProperNameC{0}{0}{#1}%
+}
+
+\newlength{\PNlength}
+\newcommand\PlaceNameC[4][0.7zw]{%
+    \settowidth{\PNlength}{#4}%
+    \setlength{\lPNskip}{0.1zw}%
+    \setlength{\rPNskip}{0.1zw}%
+    \advance\lPNskip#2zw%
+    \advance\rPNskip#3zw%
+    \advance\PNlength-\lPNskip
+    \advance\PNlength-\rPNskip
+    \advance\lPNskip\lPNskip
+    \advance\lPNskip\PNlength
+    \makebox[0pt]{%
+    \hspace{\lPNskip}\setlength{\fboxsep}{0.05zw}%
+        \raisebox{#1}{\framebox{\hspace{\PNlength}}}%
+    }\nolinebreak%
+    #4%
+}
+\newcommand\PlaceName[2][0.7zw]{%
+    \PlaceNameC[#1]{0}{0}{#2}%
+}
+
+\newcommand\smallwave{\leavevmode \bgroup \markoverwith{\raise0.45em\hbox{$\tilde{\null\kern0.25zw}$}}\ULon}
+\newcommand\BookTitleC[3]{
+    \setlength{\lPNskip}{0.1zw}%
+    \setlength{\rPNskip}{0.1zw}%
+    \advance\lPNskip#1zw%
+    \advance\rPNskip#2zw%
+    \hskip0.05zw\hskip\lPNskip\smallwave{\kern-\lPNskip#3\kern-\rPNskip}\kern\rPNskip%
+}
+\newcommand\BookTitle[1]{%
+    \BookTitleC{0}{0}{#1}%
+}
+
+\usepackage{pxrubrica}
+\makeatletter
+\pxrr@k@declare@mark{cdots}{%
+  \pxrr@dima=\pxrr@ruby@zw\relax
+  \hb@xt@\pxrr@dima{%
+    \kern-0.2\pxrr@dima
+    \pxrr@if@in@tate{}{\lower 0.37\pxrr@dima}%
+    \hb@xt@2\pxrr@dima{%
+      \pxrr@dima=\f@size\p@
+      \fontsize{2\pxrr@dima}{\z@}\selectfont
+      \hss
+      $\cdots$
+      \hss
+    }%
+    \hss
+  }%
+}
+\kentensizeratio{0.3}\kentenmarkintate{cdots}
+
+
+%% verse number: Chinese numerals
+\usepackage{intcalc}
+\newcommand{\zhvnumber}[1]{%
+    \ifnum#1<21%
+        \zhnumber{#1}
+    \else\ifnum\intcalcMod{#1}{10}=0
+        \zhnumber{#1}
+        \else
+        \zhdigits{#1}
+        \fi
+    \fi
+}
+
+%% verse number formating
+\newlength{\vnskip}
+\usepackage[noresetlinenumannotation, series={A}, noend,noeledsec,nofamiliar,noledgroup]{reledmac}%Not resetting line number annotation
+\setlinenumannotationsep{\\[-3pt]}
+\makeatletter
+\renewcommand{\store@annot@to@absline}[1]{%
+    \ifledRcol%
+    \ifcsdef{annotR@\the\absline@numR @\the\section@numR}{%
+        \csgappto{annotR@\the\absline@numR @\the\section@numR}{\@linenumannotationsep#1}%
+        }{%
+            \csgdef{annotR@\the\absline@numR @\the\section@numR}{\zhvnumber{#1}}%
+        }%
+    \else%
+        \ifcsdef{annot@\the\absline@num @\the\section@num}{%
+        \csgappto{annot@\the\absline@num @\the\section@num}{\@linenumannotationsep\zhvnumber{#1}}%
+    }{%
+        \csgdef{annot@\the\absline@num @\the\section@num}{\zhvnumber{#1}}%
+    }%
+    \fi%
+}%
+\makeatother
+\newcommand{\vnwrapper}[1]{\raisebox{0pt}[\height][0pt]{\parbox{3zw}{\raggedleft\bfseries\tiny #1}}}
+\newcommand{\bvmark}[1]{%
+    \allowbreak\settowidth{\vnskip}{\mbox{\bfseries\tiny\zhvnumber{#1}}}%
+    \raisebox{0.75zw}{\makebox[0pt]{\hskip\vnskip\bfseries\tiny\zhvnumber{#1}}}%
+}
+\newcommand{\bvannot}[1]{%
+    \linenumannotation{#1}\nolinebreak%
+}
+\newcommand{\bv}[1]{%
+    \bvmark{#1}%
+    \bvannot{#1}%
+}
+\makeatletter
+\Xwraplinenumannotation{\vnwrapper}%We just typeset the annotation, without any formatting
+\renewcommand{\linenumrep}[1]{}% We don't typeset the real line number.
+\makeatother
+\Xnoidenticallinenumannotation% Don't typeset to identical line number annotation
+\addtolength{\linenumsep}{-6pt}
+
+%% sidenote/tochu
+\renewcommand{\ledlsnotefontsetup}{\linespread{0.8}\raggedright\footnotesize}
+\setlength\ledlsnotewidth{44pt}
+\addtolength\ledlsnotesep{10pt}
+\leftnoteupfalse
+
+%% punctuation
+\newcommand{\yuentien}{\nolinebreak\raisebox{0.45zw}{\makebox[0pt]{\kern-0.5zw ．}}\allowbreak}
+\newcommand{\chuan}{\nolinebreak\raisebox{0.45zw}{\makebox[0pt]{\kern-0.5zw 。}}\allowbreak}
+\newcommand{\chientien}{\nolinebreak\raisebox{0.45zw}{\makebox[0pt]{\kern-0.5zw 、}}\allowbreak}
+\usepackage{wasysym}
+\newcommand{\Chuan}{\makebox[1zw]{\raisebox{0.125zw}{\large\Circle}}}
+
+\usepackage{adjustbox}
+\usepackage{stringstrings}
+\makeatletter
+\newcounter{@@chulength}
+\newcommand{\chu}[1]{%
+    \@getstringlength{#1}{@@chulength}%
+    \ifodd\value{@@chulength}%
+    \adjustbox{set height=1zw, set depth=0pt}{%
+        \kern0.25zw\raisebox{0.1zw}{\parbox{\intcalcAdd{\intcalcDiv{\value{@@chulength}}{2}}{1}zw}{%
+            \scriptsize \baselineskip=6.2pt \lineskiplimit=-\maxdimen \kanjiskip=0.6zw #1}}\kern-0.25zw%
+    }%
+    \else%
+    \adjustbox{set height=1zw, set depth=0pt}{%
+        \kern0.25zw\raisebox{0.1zw}{\parbox{\intcalcDiv{\value{@@chulength}}{2}zw}{%
+            \scriptsize \baselineskip=6.2pt \lineskiplimit=-\maxdimen \kanjiskip=0.6zw #1}}\kern-0.25zw
+    }%
+    \fi%
+}
+\makeatother
+
+\input{frame.tex}
+
+\renewcommand\thepage{\zhnum{page}\relax}
+
+
+\begin{document}
+\pagestyle{main}
+\setlength\parindent{1zw}
+\kanjiskip=0.0pt plus 0.2pt
+
+\firstlinenum{1}
+\linenumincrement{1}
+\input{main.tex}
+\end{document}
